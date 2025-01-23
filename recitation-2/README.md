@@ -25,7 +25,7 @@ _2024-01-24_
   - Run the command **Codespaces: Create New Codespace...**
   - Paste `cmu-crafting-software/recitation02` into the text box
   - Hit <kbd>Enter</kbd> to select the repository
-  - hit <kbd>Enter</kbd> again to select the `main` branch
+  - Hit <kbd>Enter</kbd> again to select the `main` branch
 
 ## The census API
 
