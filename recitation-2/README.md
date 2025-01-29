@@ -1,6 +1,6 @@
 # Recitation 2: REST and Web APIs
 
-**Sam Estep** (based on 2024 recitation 1 by Matthew Davis)
+**Sam Estep** (based on 2024 recitation 2 by Matthew Davis)
 
 _2024-01-24_
 
