@@ -49,8 +49,7 @@ writer2 = Writer("chicken.csv")
 - Open `wordle.py` and find method/function `play()`
 - `play()` is the interactive mode of the game and has an optional argument that tells it to print out valid characters after each step (`char_hint`).
 - Play the game once to see this working; in your terminal:
-  - `cd recitation-4`
-  - `python3 wordle.py`
+  - `uv run wordle.py`
   - Notice the list of valid letters remaining is empty!
 - In `wordle.py` add code to `valid_letters` to make it work.
 
