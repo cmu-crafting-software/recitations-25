@@ -62,7 +62,7 @@ The `WordleGame` **class** inside `wordle.py` represents a single game of Wordle
 
 - Instantiate a `WordleGame` **object** with a predefined answer `apple`.
   ```
-  $ python3
+  $ uv run python3
   >>> import wordle
   >>> game = wordle.WordleGame('./words.json','apple')
   ```
@@ -77,9 +77,9 @@ The `WordleGame` **class** inside `wordle.py` represents a single game of Wordle
   ```
 - Print out the history of hints, and if you indeed won the game using methods defined in the class.
   ```
-  >>> if(game.game_won):
-  ...   print("YAY! You won!")
-  ...   game.show_history()
+  >>> if game.game_won:
+  ...     print("YAY! You won!")
+  ...     game.show_history()
   ...
   🟥 🟥 🟨 🟥 🟨
   🟩 🟩 🟩 🟩 🟥
