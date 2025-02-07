@@ -52,7 +52,7 @@ writer2 = Writer("chicken.csv")
   - `cd recitation-4`
   - `python3 wordle.py`
   - Notice the list of valid letters remaining is empty!
-- In `recitation-4/wordle.py` add code to `valid_letters` to make it work.
+- In `wordle.py` add code to `valid_letters` to make it work.
 
 In the desktop version of Wordle, the game shows you the characters on a colored keyboard, which is helpful for keeping track of the valid characters to use. Let's try to do that.
 
