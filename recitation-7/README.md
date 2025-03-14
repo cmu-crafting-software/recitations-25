@@ -1,63 +1,54 @@
-# Recitation 7: Deploying your visualization to the internet using GitHub Pages
+# Recitation 7: testing your work automatically using GitHub Actions
 
-__Matthew Davis__ (based on Wode "Nimo" Ni's 2022 recitation 7)
+**Sam Estep**
 
-_2024-03-29_
+_2024-03-14_
 
-## Setup Github Pages
+[GitHub Actions](https://github.com/features/actions) lets you tell GitHub to run your code in the cloud (for free!) anytime you change it. So for instance, if you're working on a Python project, you can use GitHub Actions to run your tests every time you `git push`. This has a few benefits:
 
-GitHub Pages is a deployment service that lets you automatically deploy your website. Today we will be deploying one of your visualizations from HW6 onto the web for the whole world to see.
+1. It'll tell you in case you forgot (or just didn't bother) to run all your own tests before pushing. It's not _hard_ to always run your tests, but even I don't bother doing it every single time; sometimes it seems "obvious" that a change won't break anything. Sometimes I'm wrong about that, though, and then GitHub Actions catches me!
+2. It gives you more confidence that your code actually runs on a computer different from your own. It doesn't tell you that your code will work _anywhere_, since the [GitHub Actions runners](https://github.com/actions/runner-images) still come with a bunch of software pre-installed, but it's still _far_ more generic than your own machine.
+3. If someone wants to collaborate with you by editing your code and opening a pull request on your repo, they don't even need to know how to install the software to test your project, but GitHub will run the tests anyway! Also, on the flipside, since you've already gone through the effort to get your tests working in GitHub Actions, it's much more likely that someone else will be able to run them on their machine without too much trouble.
 
-* Accept the `student-site` assignment: <https://classroom.github.com/a/-PmHW5eA>.
-* Go to `student-site-<githubid>` on GitHub and setup GitHub Pages.
-  * Settings -> Pages
-  * Choose `main` under "Branch."
-  * Hit "Save."
-* Clone the repo, `student-site-<githubid>`, locally or open it in Codespaces
-  * Push an empty commit: `git commit --allow-empty -m "trigger pages"` then `git push`
-  * After a few minutes, your page should be up!
-  * Find the URL for your page here on GitHub: Repo `student-site-<githubid>` -> Settings -> Pages -> Visit Site
-  * Reference: <https://docs.github.com/en/pages/quickstart>
-* Paste your GitHub pages URL (the one with the default visualization) into the `#spring-24-crafting-software` Slack channel.
+Let's get started!
 
-## Refresh on HTML and CSS
+- First, open GitHub Codespaces in the repository we'll be using for today's recitation: <https://github.com/cmu-crafting-software/recitation07>
+- Make sure you're up to date with the `main` branch: `git pull`
+- Then, run this command to create and switch to your own branch: `git switch -c [andrewID]`
+- Go ahead and push your branch now, just so that it exists on GitHub too before we continue: `git push -u origin HEAD`
 
-* HTML (HyperText Markup Language) is the standard markup language for Web pages. It defines the **content** of the webpage.
-  * Note: Markdown (what you write in, e.g., `README.md`) is converted to HTML
-  * `<div>`: used as a container for HTML elements -- which is then styled with CSS or manipulated with JavaScript
-  * Helpful HTML cheat sheets: 
-    * <https://github.com/iLoveCodingOrg/html-cheatsheet/raw/master/html-cheatsheet.pdf>
-    * <https://developer.mozilla.org/en-US/docs/Learn/HTML/Cheatsheet>
-* CSS (Cascading Style Sheet): defines the **styling** of HTML components (e.g. color, margin, layout etc.)
-  * Selectors: classes, ids, tag types
-  * Inline styling
-  * The DOM inspector in F12 Developer Tools
-  * Helpful CSS cheat sheet: <https://github.com/iLoveCodingOrg/css-cheatsheet/raw/master/css-cheatsheet.pdf>
-* JavaScript: everything else that's fancy: interactivity and animations
-* More on CSS and JS later! 
+Next, we're going to create a Python project using [uv](https://docs.astral.sh/uv/) like we've done before; run these commands:
 
-## Deploy your favorite visualization to the internet
+```sh
+uv init
+uv add pytest
+```
 
-* Export your favorite Altair visualization from HW6:
-  * **Hint**: We did this in lecture this week using, e.g., `chart.save("index.html")`
-  * Reference: https://altair-viz.github.io/user_guide/saving_charts.html#html-format
-  * You will end up with a `.html` file that contains your visualization
-* Overwrite the visualization in the starter repository (`index.html`) with the one you just exported  
-  * Add a title `<title></title>`, heading `<h1></h1>`, and paragraph `<p></p>` that describe your visualization
-  * Add a bulleted list `<ul><li>item 1</li><li>item 2</li></ul>` with some interesting facts.
-  * To update your new website on the internet: add, commit, and push to your remote GitHub repo
-  * GitHub Pages will build and deploy the changes you pushed to your website automatically after a few minutes
-* Explore some of the other CSS and HTML options
-  * Remmeber to add, commit, and push to your remote GitHub repo frequently!
-* Take a look at some of the pages in the Slack channel. Do you see anything you like? Try to re-create it in your own page!
-  * Hint: Use View Source or F12 Developer Tools in your web browser to see their HTML and CSS
+Then create a Python test file: `recitation7_test.py`
 
-## How does this actually work?
+```python
+def test_numbers():
+    assert 2 + 2 == 4
+```
 
-* GitHub Actions allows you to run code on GitHub's servers when something happens in your repository
-  * The most common "something" is when a commit is pushed to the GitHub repository
-  * Developers use this to, e.g., automatically run a test suite against new code to make sure the new code doesn't break anything
-* When you configure GitHub Pages, GitHub creates a GitHub Action that builds and deploys your web page when you push new commits
-  * You can see this GitHub Action by going to your repo on GitHub and clicking Actions -> pages-build-deployment
-  * Clicking one of the runs will show you the three steps in this Action
-  * It's not so important what these steps are. GitHub takes care of building everything and deploying the web server for you
+Now, we're going to create our first GitHub Actions _workflow_. Copy-paste this code into a file with this name: `.github/workflows/test.yml`
+
+```yaml
+name: Test
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv run pytest
+```
+
+And let's test it out!
+
+```sh
+git commit
+git push
+```
